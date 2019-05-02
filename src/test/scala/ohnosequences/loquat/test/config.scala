@@ -17,7 +17,7 @@ case object config {
     val iamRoleName = "loquat.testing"
     val logsS3Prefix = s3"loquat.testing" /
 
-    val metadata: AnyArtifactMetadata = ohnosequences.generated.metadata.loquat
+    val metadata: AnyArtifactMetadata = com.miodx.clonomap.generated.metadata.loquat
 
     val  managerConfig = ManagerConfig(
       defaultAMI,
