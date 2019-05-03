@@ -4,12 +4,12 @@ organization := "com.miodx.clonomap"
 version      := "2.0.0"
 bucketSuffix := "era7.com"
 
-scalaVersion  := "2.12.8"
+scalaVersion  := "2.11.11"
 
 libraryDependencies ++= Seq(
   // Internal:
-  "com.miodx.common"           %% "aws-statika"     % "2.0.2",
-  "com.miodx.common"           %% "datasets"        % "0.5.3",
+  "com.miodx.common"           %% "aws-statika"     % "2.0.0",
+  "com.miodx.common"           %% "datasets"        % "0.5.1",
   // Logging:
   "ch.qos.logback"              % "logback-classic" % "1.2.3",
   "com.typesafe.scala-logging" %% "scala-logging"   % "3.7.2",
