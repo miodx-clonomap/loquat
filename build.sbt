@@ -1,8 +1,9 @@
 name         := "loquat"
 description  := "🍋"
 organization := "com.miodx.clonomap"
-version      := "2.0.0"
-bucketSuffix := "era7.com"
+version      := "2.1.0-SNAPSHOT"
+
+bucketSuffix := "miodx.com"
 
 scalaVersion  := "2.11.11"
 

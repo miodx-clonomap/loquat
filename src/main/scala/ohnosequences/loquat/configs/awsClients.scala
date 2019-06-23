@@ -2,6 +2,7 @@ package ohnosequences.loquat
 
 import com.amazonaws.auth._
 import com.amazonaws.regions._
+import com.amazonaws.services.ec2.AmazonEC2
 import ohnosequences.awstools
 
 
@@ -10,7 +11,7 @@ case class AWSClients(
   credentials: AWSCredentialsProvider
 ) {
 
-  lazy val ec2 = awstools.ec2.clientBuilder
+  lazy val ec2: AmazonEC2 = awstools.ec2.clientBuilder
     .withRegion(regionProvider.getRegion)
     .withCredentials(credentials)
     .build()

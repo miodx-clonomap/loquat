@@ -2,6 +2,9 @@ package ohnosequences.loquat
 
 import ohnosequences.awstools.ec2._
 import com.amazonaws.auth.AWSCredentialsProvider
+import org.slf4j.LoggerFactory
+
+import scala.util.{Failure, Success}
 
 /* Simple type to separate user-related data from the config */
 case class LoquatUser(
@@ -24,8 +27,14 @@ case class LoquatUser(
       else Seq(s"User email [${email}] has invalid format")
 
     emailErr ++ {
-      if(aws.ec2.keyPairExists(keypairName).isSuccess) Seq()
-      else Seq(s"Keypair [${keypairName}] doesn't exist")
+      val tryKeypairAvailable = aws.ec2.keyPairExists(keypairName)
+      tryKeypairAvailable match {
+        case Success(true) => Seq()
+        case Success(false) => Seq(s"Keypair [${keypairName}] doesn't exist")
+        case Failure(exception) =>
+          LoggerFactory.getLogger(getClass).warn("Error checking for keypair existence ", exception)
+          Seq("Error checking for keypair existence " + exception.getMessage)
+      }
     }
   }
 

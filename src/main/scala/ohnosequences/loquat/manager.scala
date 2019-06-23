@@ -132,7 +132,9 @@ trait AnyManagerBundle extends AnyBundle with LazyLogging { manager =>
         config.workersConfig.groupSize,
         if  (config.workersConfig.availabilityZones.isEmpty) aws.ec2.getAllAvailableZones
         else config.workersConfig.availabilityZones
-      ).get
+      ).recover {
+        case _: AlreadyExistsException => logger.warn(s"Autoscaling group already exists")
+      }.get
     } -&-
     LazyTry {
       logger.debug("Creating tags for workers autoscaling group")
@@ -140,7 +142,9 @@ trait AnyManagerBundle extends AnyBundle with LazyLogging { manager =>
         "product" -> "loquat",
         "group"   -> names.workersGroup,
         StatusTag.label -> StatusTag.running.status
-      )).get
+      )).recover {
+        case _: AlreadyExistsException => logger.warn(s"Tags already exists")
+      }.get
     }
   }
 
