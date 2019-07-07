@@ -1,6 +1,7 @@
 package ohnosequences.loquat
 
 import com.amazonaws.auth._
+import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.regions._
 import com.amazonaws.services.ec2.AmazonEC2
 import ohnosequences.awstools
@@ -41,16 +42,23 @@ case object AWSClients {
 
   def apply(): AWSClients = AWSClients(
     new DefaultAwsRegionProviderChain(),
-    new DefaultAWSCredentialsProviderChain()
+    credentialsProvider//new DefaultAWSCredentialsProviderChain()
   )
 
   def withRegion(regionProvider: AwsRegionProvider): AWSClients = AWSClients(
     regionProvider,
-    new DefaultAWSCredentialsProviderChain()
+    credentialsProvider//new DefaultAWSCredentialsProviderChain()
   )
 
   def withCredentials(credentials: AWSCredentialsProvider): AWSClients = AWSClients(
     new DefaultAwsRegionProviderChain(),
     credentials
   )
+
+  def credentialsProvider: AWSCredentialsProviderChain = new AWSCredentialsProviderChain(
+    new EC2ContainerCredentialsProviderWrapper(),
+    new InstanceProfileCredentialsProvider(false),
+    new ProfileCredentialsProvider("default")
+  )
+
 }

@@ -196,13 +196,14 @@ case class TaskContext(
       case Success(_, outputFiles) => outputFiles
       case Failure(errors) => {
 
-        logger.error(s"Data processing failed, publishing it to the error queue")
+        val errorsMessage = errors.mkString("\n")
+        logger.error(s"Data processing failed, publishing it to the error queue '${config.resourceNames.errorQueue}'.\nErrors:" + errorsMessage)
         errorQueue.sendOne(
-          // TODO: attach normall log
-          ProcessingResult(instance.id, errors.mkString("\n")).toString
+          // TODO: attach normal log
+          ProcessingResult(instance.id, errorsMessage).toString
         )
         // TODO: make a specific exception
-        throw new Throwable(errors.mkString("\n"))
+        throw new Throwable(errorsMessage)
       }
     }
   }
